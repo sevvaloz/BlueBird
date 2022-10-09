@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.twitterdemo.GlobalClass
 import com.example.twitterdemo.R
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +21,6 @@ class ShareTweetActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
-    // Access a Cloud Firestore instance from your Activity
     val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +39,7 @@ class ShareTweetActivity : AppCompatActivity() {
 
         //date ayarlama
         val net_date = date.toDate()
-        val sdf = SimpleDateFormat("dd/MM/yy hh:mm a", Locale.ENGLISH)
+        val sdf = SimpleDateFormat("dd/MM/yy hh:mm:ss a", Locale.ENGLISH)
         val sdf_date = sdf.format(net_date)
 
         //hashmap olusturma
@@ -47,7 +47,6 @@ class ShareTweetActivity : AppCompatActivity() {
         user.put("Tweet", tweet)
         user.put("UserName", name)
         user.put("TweetDate", sdf_date)
-
 
         //database, collection, document olusturma
         if(tweet != ""){
@@ -61,7 +60,6 @@ class ShareTweetActivity : AppCompatActivity() {
         } else{
             Toast.makeText(this, "Please write something!", Toast.LENGTH_LONG).show()
         }
-
     }
 
 

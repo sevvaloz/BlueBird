@@ -8,6 +8,11 @@
     </item>
 
     <item
+        android:id="@+id/profile"
+        android:title="Profile">
+    </item>
+
+    <item
         android:id="@+id/log_out"
         android:title="Log Out">
     </item>

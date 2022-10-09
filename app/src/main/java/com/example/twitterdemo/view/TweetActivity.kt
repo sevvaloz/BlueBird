@@ -1,53 +1,41 @@
 package com.example.twitterdemo.view
 
-import android.app.AlertDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.DialogInterface
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Adapter
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelStore
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.twitterdemo.ProfileActivity
 import com.example.twitterdemo.R
 import com.example.twitterdemo.adapter.TweetAdapter
+import com.example.twitterdemo.model.Photo
 import com.example.twitterdemo.model.Tweet
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.type.DateTime
 import kotlinx.android.synthetic.main.activity_tweet.*
+import java.sql.Date
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 class TweetActivity : AppCompatActivity(){
 
     private  lateinit var recyclerViewAdapter : TweetAdapter
 
     var tweetList = ArrayList<Tweet>()
+    var photoList = ArrayList<Photo>()
 
     private lateinit var auth: FirebaseAuth
 
-    // Access a Cloud Firestore instance from your Activity
     val db = Firebase.firestore
+
 
     //Menuyu MainActivity'e baglamak
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -76,6 +64,10 @@ class TweetActivity : AppCompatActivity(){
             startActivity(intent)
             //finish yapmadık yani activity'i kapatmadık çünkü: kullanıcı geri gelmek istediğinde uygulamadan çıkış yapsın istemiyoruz.
         }
+        if(item.itemId == R.id.profile){
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -83,7 +75,6 @@ class TweetActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tweet)
 
-        // Initialize Firebase Auth
         auth = Firebase.auth
 
         FirebaseGetData()
@@ -92,7 +83,6 @@ class TweetActivity : AppCompatActivity(){
         recyclerView.layoutManager = layoutmanager
         recyclerViewAdapter = TweetAdapter(tweetList)
         recyclerView.adapter = recyclerViewAdapter
-
     }
 
 
@@ -114,6 +104,7 @@ class TweetActivity : AppCompatActivity(){
                             val image = document.get("Image") as String?
 
                             var savedTweet = Tweet(userName, tweet, tweetDate, image)
+
                             tweetList.add(savedTweet)
 
                         }
@@ -125,5 +116,10 @@ class TweetActivity : AppCompatActivity(){
     }
 
 
+
+
+
 }
+
+
 
