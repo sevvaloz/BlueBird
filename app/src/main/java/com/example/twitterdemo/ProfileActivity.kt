@@ -40,7 +40,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     fun applyManagement(view: View){
-
         val uuid = UUID.randomUUID()
         var pp = "${uuid}.jpg"
 
@@ -50,7 +49,7 @@ class ProfileActivity : AppCompatActivity() {
         if(image != null){
             profilePictureRef.putFile(image!!).addOnSuccessListener {
                 //url alma
-                profilePictureRef.downloadUrl.addOnSuccessListener {
+                profilePictureRef.downloadUrl.addOnSuccessListener { it ->
                     strUrl = it.toString()
                     val photo = hashMapOf<String, String>()
                     val name = Firebase.auth.currentUser!!.displayName.toString()
@@ -69,12 +68,12 @@ class ProfileActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, it.localizedMessage, Toast.LENGTH_LONG).show()
             }
         }
+        finish()
     }
 
 
 
     fun managePp(view: View) {
-
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.READ_EXTERNAL_STORAGE

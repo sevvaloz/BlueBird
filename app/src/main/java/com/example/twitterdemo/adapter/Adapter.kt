@@ -35,6 +35,9 @@ class TweetAdapter(val tweetlist : ArrayList<Tweet>) : RecyclerView.Adapter<Twee
         holder.itemView.recycler_row_user_name.text = tweetlist[position].username
         holder.itemView.recycler_row_tweet.text = tweetlist[position].usertweet
         holder.itemView.recycler_row_tweet_date.text = tweetlist[position].tweetdate.toString()
+        /*if(Firebase.auth.currentUser!!.displayName == tweetlist[position].username){
+            Picasso.get().load(Firebase.auth.currentUser!!.photoUrl).into(holder.itemView.recycler_row_pp)
+        }*/
     }
 
     override fun getItemCount(): Int {
