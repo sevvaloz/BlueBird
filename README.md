@@ -1,4 +1,8 @@
-BlueBird is a writing-sharing application kind of Twitter. I used Kotlin language and Firebase technologies like Firestore Database(NoSQL), Authentication. Also, I designed both light theme and dark theme. So it's gonna change depends on your phone theme.
+- BlueBird is a writing-sharing application.
+- Info -> I used Firestore Database, Authentication, Storage from Firebase technologies.
+- Theme -> App has two different theme: light and dark. You can use both of them.
+- Permission -> App need "data external storage permission" for upload profile pictures.
+- Libraries -> Picasso.
 
 ![td1](https://user-images.githubusercontent.com/70901471/190875939-9f32d7ec-84fe-4b6d-b6ae-47d1129cfe9c.png)
 ![td2](https://user-images.githubusercontent.com/70901471/190875941-d4655841-0b81-4b8b-9355-628e2e01f1ec.png)
