@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,11 +16,16 @@ import com.example.twitterdemo.model.Tweet
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.type.DateTime
 import kotlinx.android.synthetic.main.activity_tweet.*
+import kotlinx.android.synthetic.main.recycler_row.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
@@ -92,28 +98,52 @@ class TweetActivity : AppCompatActivity(){
             if(error != null){
                 Toast.makeText(this, error.localizedMessage, Toast.LENGTH_LONG).show()
             }
-            else{
-                if(snapshot != null){
-                    if(!snapshot.isEmpty){
-                        val documents = snapshot.documents
-                        tweetList.clear()
-                        for(document in documents){
-                            val userName = document.get("UserName") as String //get fonksiyonu any tipinde geri dondugu icin string'e cevirdik
-                            val tweet = document.get("Tweet") as String
-                            val tweetDate = document.get("TweetDate") as Any
-                            val image = document.get("Image") as String?
+            if(snapshot != null){
+                if(!snapshot.isEmpty){
+                    val documents = snapshot.documents
+                    tweetList.clear()
+                    for(document in documents){
+                        val userName = document.get("UserName") as String //get fonksiyonu any tipinde geri dondugu icin string'e cevirdik
+                        val tweet = document.get("Tweet") as String
+                        val tweetDate = document.get("TweetDate") as Any
+                        val image = document.get("Image") as String?
 
-                            var savedTweet = Tweet(userName, tweet, tweetDate, image)
+                        var savedTweet = Tweet(userName, tweet, tweetDate, image)
 
-                            tweetList.add(savedTweet)
+                        tweetList.add(savedTweet)
 
-                        }
-                        recyclerViewAdapter.notifyDataSetChanged() //yeni veri geldiginden haberdar et
                     }
+                    recyclerViewAdapter.notifyDataSetChanged() //yeni veri geldiginden haberdar et
                 }
             }
         }
     }
+
+
+    //firebase'den tweet silme??? ÇALIŞMIYOR
+    fun DeleteTweet(){
+        db.collection("Tweets").addSnapshotListener { snapshot, error ->
+            val documents = snapshot!!.documents
+            if(snapshot == null){
+                for(document in documents){
+
+                    val userName = document.get("UserName") as String
+                    val tweet = document.get("Tweet") as String
+                    val tweetDate = document.get("TweetDate") as Any
+                    val image = document.get("Image") as String?
+
+                    var deletedTweet = Tweet(userName, tweet, tweetDate, image)
+                    tweetList.remove(deletedTweet)
+
+                }
+                recyclerViewAdapter.notifyDataSetChanged()
+            }
+
+
+        }
+
+    }
+
 
 
 
